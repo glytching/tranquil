@@ -1,9 +1,9 @@
 package io.github.glytching.tranquil;
 
 import io.github.glytching.tranquil.configuration.Configuration;
-import io.github.glytching.tranquil.context.TranquilHandler;
 import io.github.glytching.tranquil.context.ParseContext;
 import io.github.glytching.tranquil.context.ReadContext;
+import io.github.glytching.tranquil.context.TranquilHandler;
 import io.github.glytching.tranquil.mapping.MappingProvider;
 
 import java.io.File;
@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class Tranquil {
+
+  private Tranquil() {}
 
   /**
    * This is a shortcut to {@link #parse(String)} following by a read on the resulting {@link

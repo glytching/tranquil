@@ -31,6 +31,21 @@ public abstract class TypeRef<T> implements Comparable<TypeRef<T>> {
     return type;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    final TypeRef<?> typeRef = (TypeRef<?>) o;
+
+    return type != null ? type.equals(typeRef.type) : typeRef.type == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return type != null ? type.hashCode() : 0;
+  }
+
   /** Prevent construction of a reference without type information. */
   @Override
   public int compareTo(TypeRef<T> o) {

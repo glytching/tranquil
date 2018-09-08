@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
 
 public class Configuration {
 
-  private static final Defaults DEFAULTS = null;
+  private static final Defaults DEFAULTS = DefaultsImpl.INSTANCE;
 
   private final MappingProvider mappingProvider;
   private final int lruCacheSize;
@@ -75,11 +75,7 @@ public class Configuration {
   }
 
   private static Defaults getEffectiveDefaults() {
-    if (DEFAULTS == null) {
-      return DefaultsImpl.INSTANCE;
-    } else {
-      return DEFAULTS;
-    }
+    return DEFAULTS;
   }
 
   public static class ConfigurationBuilder {

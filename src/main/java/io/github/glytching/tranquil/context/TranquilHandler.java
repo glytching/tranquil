@@ -5,10 +5,10 @@ import io.github.glytching.tranquil.cache.CacheProvider;
 import io.github.glytching.tranquil.configuration.Configuration;
 import io.github.glytching.tranquil.configuration.Option;
 import io.github.glytching.tranquil.exception.TranquilException;
+import io.github.glytching.tranquil.mapping.TypeRef;
 import io.github.glytching.tranquil.ql.Predicator;
 import io.github.glytching.tranquil.ql.Projector;
 import io.github.glytching.tranquil.ql.groovy.GroovyFactory;
-import io.github.glytching.tranquil.mapping.TypeRef;
 
 import java.io.*;
 import java.util.*;
@@ -62,12 +62,8 @@ public class TranquilHandler implements ParseContext, ReadContext {
 
   @Override
   public ReadContext parse(File sourceFile) throws IOException {
-    FileInputStream fis = null;
-    try {
-      fis = new FileInputStream(sourceFile);
+    try (FileInputStream fis = new FileInputStream(sourceFile)) {
       parse(fis);
-    } finally {
-      closeQuietly(fis);
     }
     return this;
   }
