@@ -1,0 +1,5 @@
+.idea/
+target/
+*.iml
+tree.txt
+todo.md
