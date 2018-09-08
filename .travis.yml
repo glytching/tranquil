@@ -1,0 +1,13 @@
+language: java
+
+# workaround this issue: https://github.com/travis-ci/travis-ci/issues/6593
+sudo: true
+
+bundler_args: --retry 3
+
+script: mvn verify jacoco:report coveralls:report -DrepoToken=H4neLOFFOC06Qfc031RwapRuXfLZxZIVG
+
+notifications:
+  email:
+    on_sucess: never
+    on_failure: always

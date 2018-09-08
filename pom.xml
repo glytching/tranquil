@@ -53,9 +53,12 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <maven.surefire.plugin.version>2.20</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+        <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+        <maven.javadoc.plugin.version>3.0.0-M1</maven.javadoc.plugin.version>
         <maven.coveralls.plugin.version>4.3.0</maven.coveralls.plugin.version>
-        <maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
+        <maven.jacoco.plugin.version>0.8.1</maven.jacoco.plugin.version>
+        <maven.source.plugin.version>3.0.0</maven.source.plugin.version>
 
         <antlr.version>4.5</antlr.version>
         <groovy.version>2.4.12</groovy.version>
@@ -85,6 +88,18 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Built-By>glytching</Built-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
@@ -111,8 +126,36 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>${maven.javadoc.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <Built-By>glytching</Built-By>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
                 <configuration>
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
