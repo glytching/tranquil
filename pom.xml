@@ -168,7 +168,7 @@
                     <excludes>
                         <!-- exclude the ANTLR generated code -->
                         <exclude>**/antlr/*.*</exclude>
-                        <exclude>**/LoggingListener.*</exclude>
+                        <exclude>**/TranquilLoggingListener.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
