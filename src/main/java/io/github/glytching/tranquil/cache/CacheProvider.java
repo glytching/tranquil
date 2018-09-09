@@ -1,5 +1,6 @@
 package io.github.glytching.tranquil.cache;
 
+/** Singleton factory pattern over an instance of {@link Cache}. */
 public class CacheProvider {
   private static Cache INSTANCE;
 

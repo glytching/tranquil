@@ -1,7 +1,5 @@
 package io.github.glytching.tranquil.context;
 
-import io.github.glytching.tranquil.cache.Cache;
-import io.github.glytching.tranquil.cache.CacheProvider;
 import io.github.glytching.tranquil.configuration.Configuration;
 import io.github.glytching.tranquil.configuration.Option;
 import io.github.glytching.tranquil.exception.TranquilException;
@@ -10,18 +8,25 @@ import io.github.glytching.tranquil.ql.Predicator;
 import io.github.glytching.tranquil.ql.Projector;
 import io.github.glytching.tranquil.ql.groovy.GroovyFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+/**
+ * Tranquil parses an input and reads from the parsed form of that input. For example: parse {@code
+ * JSON} into a {@code Map} and then apply projections and predicates to that {@code Map}. This
+ * class combines the parsing and reading behaviour.
+ */
 public class TranquilHandler implements ParseContext, ReadContext {
 
   private final Configuration configuration;
-  private final boolean suppressExceptions;
   private final GroovyFactory groovyFactory;
-  private final Cache cache;
+  private final boolean suppressExceptions;
 
-  private List<Map<String, Object>> asMap;
+  private List<Map<String, Object>> parsed;
 
   public TranquilHandler() {
     this(Configuration.defaultConfiguration());
@@ -31,18 +36,17 @@ public class TranquilHandler implements ParseContext, ReadContext {
     this.configuration = configuration;
     this.suppressExceptions = configuration.containsOption(Option.SUPPRESS_EXCEPTIONS);
     this.groovyFactory = new GroovyFactory();
-    this.cache = CacheProvider.get(configuration.lruCacheSize());
   }
 
   @Override
   public ReadContext parse(Map<String, Object> source) {
-    this.asMap = Arrays.asList(source);
+    this.parsed = Arrays.asList(source);
     return this;
   }
 
   @Override
   public ReadContext parse(String source) {
-    this.asMap =
+    this.parsed =
         executeWithExceptionHandling(() -> configuration.mappingProvider().deserialize(source));
     return this;
   }
@@ -54,7 +58,7 @@ public class TranquilHandler implements ParseContext, ReadContext {
 
   @Override
   public ReadContext parse(InputStream sourceStream, String charset) {
-    this.asMap =
+    this.parsed =
         executeWithExceptionHandling(
             () -> configuration.mappingProvider().deserialize(sourceStream, charset));
     return this;
@@ -70,17 +74,17 @@ public class TranquilHandler implements ParseContext, ReadContext {
 
   @Override
   public String read(String select, String where) {
-    return configuration.mappingProvider().serialize(internalRead(asMap, select, where));
+    return configuration.mappingProvider().serialize(internalRead(parsed, select, where));
   }
 
   @Override
   public <T> T read(String select, String where, Class<T> type) {
-    return configuration.mappingProvider().serialize(internalRead(asMap, select, where), type);
+    return configuration.mappingProvider().serialize(internalRead(parsed, select, where), type);
   }
 
   @Override
   public <T> T read(String select, String where, TypeRef<T> type) {
-    return configuration.mappingProvider().serialize(internalRead(asMap, select, where), type);
+    return configuration.mappingProvider().serialize(internalRead(parsed, select, where), type);
   }
 
   private List<Map<String, Object>> internalRead(
@@ -152,22 +156,10 @@ public class TranquilHandler implements ParseContext, ReadContext {
   }
 
   private Predicator getPredicator(String expression) {
-    //    Predicator predicator = cache.get(Predicator.class, expression);
-    //    if (predicator == null) {
-    //      predicator = groovyFactory.createPredicator(expression);
-    //      cache.put(expression, predicator);
-    //    }
-    //    return predicator;
     return groovyFactory.createPredicator(expression);
   }
 
   private Projector getProjector(String expression) {
-    //    Projector projector = cache.get(Projector.class, expression);
-    //    if (projector == null) {
-    //      projector = groovyFactory.createProjector(expression);
-    //      cache.put(expression, projector);
-    //    }
-    //    return projector;
     return groovyFactory.createProjector(expression);
   }
 
@@ -182,15 +174,6 @@ public class TranquilHandler implements ParseContext, ReadContext {
       return Collection.class.isAssignableFrom(value.getClass());
     } else {
       return false;
-    }
-  }
-
-  private void closeQuietly(Closeable closeable) {
-    try {
-      if (closeable != null) {
-        closeable.close();
-      }
-    } catch (IOException ignore) {
     }
   }
 

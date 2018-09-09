@@ -20,7 +20,7 @@ import io.github.glytching.tranquil.ql.parser.BaseParser;
 import io.github.glytching.tranquil.ql.parser.WhereClauseParser;
 
 /**
- * An implementation of {@link BaseParser} for {@code where} expressions. Example usage:
+ * A Groovy specific implementation of {@link WhereClauseParser}. Example usage:
  *
  * <pre>
  *  GroovySelectClauseParser parser = new GroovySelectClauseParser();

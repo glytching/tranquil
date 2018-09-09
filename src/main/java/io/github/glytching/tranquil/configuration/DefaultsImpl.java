@@ -6,7 +6,7 @@ import io.github.glytching.tranquil.mapping.MappingProvider;
 import java.util.EnumSet;
 import java.util.Set;
 
-/** Encapsulates the configuration defaults. */
+/** Encapsulates the default configuration. */
 public class DefaultsImpl implements Defaults {
 
   public static final DefaultsImpl INSTANCE = new DefaultsImpl();

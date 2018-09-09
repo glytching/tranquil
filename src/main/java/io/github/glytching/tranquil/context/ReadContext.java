@@ -2,6 +2,11 @@ package io.github.glytching.tranquil.context;
 
 import io.github.glytching.tranquil.mapping.TypeRef;
 
+/**
+ * Tranquil parses an input and reads from the parsed form of that input. For example: parse {@code
+ * JSON} into a {@code Map} and then apply projections and predicates to that {@code Map}. This
+ * interface defines the reading features.
+ */
 public interface ReadContext {
 
   /**

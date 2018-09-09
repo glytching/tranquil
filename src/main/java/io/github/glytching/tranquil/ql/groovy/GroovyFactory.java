@@ -29,8 +29,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Responsible for creating a Groovy classes for a given expression. Why Groovy? so that they can be
- * created and applied dynamically.
+ * Tranquil is given caller defined expression of predicates and projections. To apply these
+ * expressions Tranquil has to create some sort of dynamic <i>executable</i>, this is where Groovy
+ * comes in.
  */
 public class GroovyFactory {
   private static final Logger logger = Logger.getLogger(GroovyFactory.class.getName());
@@ -53,9 +54,9 @@ public class GroovyFactory {
   }
 
   /**
-   * Delegates to the {@link WhereClauseParser} to parse the given expression, supplying a ql
-   * which accepts callbacks from the parser and uses these to create a 'groovified' representation
-   * of the given expression.
+   * Delegates to the {@link WhereClauseParser} to parse the given expression, supplying a ql which
+   * accepts callbacks from the parser and uses these to create a 'groovified' representation of the
+   * given expression.
    *
    * @param expression a 'where clause'
    * @return a Groovy implementation of our Predicator, specific to the given expression
@@ -72,9 +73,9 @@ public class GroovyFactory {
   }
 
   /**
-   * Delegates to the {@link SelectClauseParser} to parse the given expression, supplying a ql
-   * which accepts callbacks from the parser and uses these to create a 'groovified' representation
-   * of the given expression.
+   * Delegates to the {@link SelectClauseParser} to parse the given expression, supplying a ql which
+   * accepts callbacks from the parser and uses these to create a 'groovified' representation of the
+   * given expression.
    *
    * @param expression a 'project clause'
    * @return a Groovy implementation of our Projector, specific to the given expression

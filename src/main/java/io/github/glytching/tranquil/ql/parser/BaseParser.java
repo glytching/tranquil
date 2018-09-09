@@ -27,6 +27,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+/**
+ * Provides the base integration with ANTLR. Extensions of this class will specialise for different
+ * expression types such as {@code select}, {@code where}.
+ */
 public abstract class BaseParser {
 
   /**

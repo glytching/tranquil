@@ -19,13 +19,11 @@ package io.github.glytching.tranquil.ql.parser;
 import io.github.glytching.tranquil.antlr.SQLParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-/**
- * Specialises {@link BaseParser} for {@code where} expressions
- */
+/** Specialises {@link BaseParser} for {@code where} expressions */
 public abstract class WhereClauseParser<T> extends BaseParser {
 
   /**
-   * Parse the given {@code expression} into something which can <i>apply</i> the {@code *
+   * Parse the given {@code expression} into something which can <i>apply</i> the {@code
    * expression}.
    *
    * @param expression the where expression

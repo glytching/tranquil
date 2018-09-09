@@ -1,5 +1,6 @@
 package io.github.glytching.tranquil.cache;
 
+/** Defines the basic features of a cache. */
 public interface Cache {
 
   Object get(String key);

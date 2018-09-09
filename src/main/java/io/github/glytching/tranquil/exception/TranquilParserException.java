@@ -17,7 +17,7 @@
 package io.github.glytching.tranquil.exception;
 
 /**
- * Extends {@link RuntimeException} to provide some identity and traceability for exceptions which
+ * Extends {@link TranquilException} to provide some identity and traceability for exceptions which
  * arise when parsing expressions.
  */
 public class TranquilParserException extends RuntimeException {

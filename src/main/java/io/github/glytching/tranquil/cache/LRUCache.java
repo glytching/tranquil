@@ -3,6 +3,7 @@ package io.github.glytching.tranquil.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/** A LRU implementation of {@link Cache}. */
 public class LRUCache implements Cache {
 
   private static final boolean SORT_BY_ACCESS = true;
