@@ -7,7 +7,9 @@ Tranquil
 
 A library for reading data from JSON (or a Java Map) using a SQL grammar.
 
-For example:
+### Examples
+
+Note: detailed docs will be added soon, tracked by [this issue](https://github.com/glytching/tranquil/issues/4).
 
 Given this JSON string:
 
