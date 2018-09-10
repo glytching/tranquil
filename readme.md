@@ -7,6 +7,20 @@ Tranquil
 
 A library for reading data from JSON (or a Java Map) using a SQL grammar.
 
+
+### Coming Soon
+
+The library is currently `v1.0.0-SNAPSHOT`, before the `1.0.0` release is published the following will be added:
+
+* Documentation:
+   * The QL syntax including usages of:
+      * All operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `in`, `not in`, `like`, `not like`, `is null`, `is not null`
+      * All conjunctions: `AND`, `OR`
+      * String literals including concatenation
+      * Numeric literals including concatenation and arithemtic operators: `+`, `-`, `*`, `/`
+   * A cookbook showing example usage covering all features and various types of input
+* Links to to Maven Central and Javadoc.io
+
 ### Examples
 
 Note: detailed docs will be added soon, tracked by [this issue](https://github.com/glytching/tranquil/issues/4).
@@ -85,20 +99,6 @@ Tranquil.parse(json).exists("quantity = 10 or owner is null")
 ```
 
 ...will return `true`.
-
-
-### Coming Soon
-
-The library is currently `v1.0.0-SNAPSHOT`, before the `1.0.0` release is published the following will be added:
-
-* Documentation:
-   * The QL syntax including usages of:
-      * All operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `in`, `not in`, `like`, `not like`, `is null`, `is not null`
-      * All conjunctions: `AND`, `OR`
-      * String literals including concatenation
-      * Numeric literals including concatenation and arithemtic operators: `+`, `-`, `*`, `/`
-   * A cookbook showing example usage covering all features and various types of input
-* Links to to Maven Central and Javadoc.io
 
 ### Building Tranquil
 
