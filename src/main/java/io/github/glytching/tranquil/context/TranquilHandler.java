@@ -82,7 +82,7 @@ public class TranquilHandler implements ParseContext, ReadContext {
         // we might be dealing with an input which contained a single array attribute
         Object value = read.get(0).entrySet().iterator().next().getValue();
         if (value instanceof List) {
-          exists = ((List) value).size() > 0;
+          exists = !((List) value).isEmpty();
         }
       }
     } else {

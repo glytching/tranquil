@@ -55,7 +55,6 @@ public class TranquilTool {
     String where =
         "stationBeanList[*].id = 281 or stationBeanList[*].stationName = 'Thompson St & Bleecker St'";
 
-    System.out.println(
-        Tranquil.using(new JacksonMappingProvider(objectMapper)).parse(file).exists(where));
+    System.out.println(Tranquil.parse(file).exists(where));
   }
 }
