@@ -70,7 +70,8 @@ public class TestData {
           + "}]"
           + "}";
 
-  // -- custom test data for Gson because of Gson's insistence on serializing all numerics as doubles
+  // -- custom test data for Gson because of Gson's insistence on serializing all numerics as
+  // doubles
 
   public static final String GSON_SIMPLE_JSON =
       "{"

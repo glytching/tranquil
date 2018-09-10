@@ -149,8 +149,7 @@ public class GroovyWhereClauseParserTest {
   public void testOrWithIn() {
     String parsed = sut.parse("x > 0 or y in ('foo', 'bar') or z not in (1, 2, 3)");
 
-    assertOutput(
-        parsed, "given?.x>0 || given?.y in [\"foo\",\"bar\"] || !(given?.z in [1,2,3])");
+    assertOutput(parsed, "given?.x>0 || given?.y in [\"foo\",\"bar\"] || !(given?.z in [1,2,3])");
   }
 
   @Test

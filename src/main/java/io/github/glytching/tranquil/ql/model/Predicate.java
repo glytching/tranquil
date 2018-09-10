@@ -24,6 +24,10 @@ public class Predicate {
     return lhs;
   }
 
+  public void setLhs(String lhs) {
+    this.lhs = lhs;
+  }
+
   public String getRhs() {
     return rhs;
   }
@@ -32,14 +36,14 @@ public class Predicate {
     return operator;
   }
 
-  public String getConjunction() {
-    return conjunction;
-  }
-
   public void setOperator(String text) {
     this.operator = text;
     // if we have received an operator then the LHS must be terminated
     lhsComplete();
+  }
+
+  public String getConjunction() {
+    return conjunction;
   }
 
   public void setConjunction(String text) {
@@ -66,10 +70,6 @@ public class Predicate {
 
   public boolean isAnyCollectionElement() {
     return anyCollectionElement;
-  }
-
-  public void setLhs(String lhs) {
-    this.lhs = lhs;
   }
 
   public void appendToRhs(String s) {

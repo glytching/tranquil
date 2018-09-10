@@ -39,12 +39,16 @@ import static org.hamcrest.Matchers.is;
 @ExtendWith(TemporaryFolderExtension.class)
 public class TranquilTest {
 
-  private static TemporaryFolder TEMPORARY_FOLDER;
   private static final String EMPTY_JSON = "{}";
+  private static TemporaryFolder TEMPORARY_FOLDER;
 
   @BeforeAll
   public static void prepare(TemporaryFolder givenTemporaryFolder) {
     TranquilTest.TEMPORARY_FOLDER = givenTemporaryFolder;
+  }
+
+  private static Stream<MappingProvider> getMappingProviders() {
+    return Stream.of(new JacksonMappingProvider(), new GsonMappingProvider());
   }
 
   @Test
@@ -367,10 +371,6 @@ public class TranquilTest {
             .parse(SIMPLE_JSON)
             .read("name, quantity, price", ""),
         is("{\n  \"name\": \"tap\",\n  \"quantity\": 10.0,\n  \"price\": 49.99\n}"));
-  }
-
-  private static Stream<MappingProvider> getMappingProviders() {
-    return Stream.of(new JacksonMappingProvider(), new GsonMappingProvider());
   }
 
   private InputStream toInputStream(String json) {

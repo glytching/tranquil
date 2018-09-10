@@ -46,6 +46,10 @@ public class Configuration {
     return new ConfigurationBuilder();
   }
 
+  private static Defaults getEffectiveDefaults() {
+    return DEFAULTS;
+  }
+
   /**
    * Returns the {@link MappingProvider} used by this configuration
    *
@@ -72,10 +76,6 @@ public class Configuration {
    */
   public boolean containsOption(Option option) {
     return options.contains(option);
-  }
-
-  private static Defaults getEffectiveDefaults() {
-    return DEFAULTS;
   }
 
   public static class ConfigurationBuilder {

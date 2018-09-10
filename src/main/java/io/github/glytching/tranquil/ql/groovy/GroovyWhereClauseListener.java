@@ -39,6 +39,23 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
   private static final Map<String, String> conjunctionsMap;
   private static final Map<String, String> operatorsMap;
 
+  static {
+    conjunctionsMap = new HashMap<>();
+    conjunctionsMap.put("and", "&&");
+    conjunctionsMap.put("AND", "&&");
+    conjunctionsMap.put("or", "||");
+    conjunctionsMap.put("OR", "||");
+
+    operatorsMap = new HashMap<>();
+    operatorsMap.put("=", "==");
+    operatorsMap.put("in", " in ");
+    operatorsMap.put("IN", " in ");
+    operatorsMap.put("like", "=~");
+    operatorsMap.put("LIKE", "=~");
+    operatorsMap.put("(", "[");
+    operatorsMap.put(")", "]");
+  }
+
   private final List<Predicate> predicates = new ArrayList<>();
   private Predicate currentPredicate = null;
   private boolean skipNextTerminal = false;
@@ -263,22 +280,5 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
 
   private boolean isClosingArray(String incoming) {
     return ARRAY_CLOSING_BRACKETS.equals(incoming);
-  }
-
-  static {
-    conjunctionsMap = new HashMap<>();
-    conjunctionsMap.put("and", "&&");
-    conjunctionsMap.put("AND", "&&");
-    conjunctionsMap.put("or", "||");
-    conjunctionsMap.put("OR", "||");
-
-    operatorsMap = new HashMap<>();
-    operatorsMap.put("=", "==");
-    operatorsMap.put("in", " in ");
-    operatorsMap.put("IN", " in ");
-    operatorsMap.put("like", "=~");
-    operatorsMap.put("LIKE", "=~");
-    operatorsMap.put("(", "[");
-    operatorsMap.put(")", "]");
   }
 }

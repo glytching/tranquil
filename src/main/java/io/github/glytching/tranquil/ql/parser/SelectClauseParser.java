@@ -19,9 +19,7 @@ package io.github.glytching.tranquil.ql.parser;
 import io.github.glytching.tranquil.antlr.SQLParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-/**
- * Specialises {@link BaseParser} for {@code select} expressions.
- */
+/** Specialises {@link BaseParser} for {@code select} expressions. */
 public abstract class SelectClauseParser<T> extends BaseParser {
 
   /**
