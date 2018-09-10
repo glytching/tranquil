@@ -181,15 +181,17 @@ public class TranquilHandler implements ParseContext, ReadContext {
   private <K> K executeWithExceptionHandling(Callable<K> callable) {
     try {
       return callable.call();
+    } catch (RuntimeException ex) {
+      if (suppressExceptions) {
+        return (K) new ArrayList<>();
+      } else {
+        throw ex;
+      }
     } catch (Exception ex) {
       if (suppressExceptions) {
         return (K) new ArrayList<>();
       } else {
-        if (ex instanceof RuntimeException) {
-          throw (RuntimeException) ex;
-        } else {
-          throw new RuntimeException(ex);
-        }
+        throw new TranquilException(ex);
       }
     }
   }

@@ -16,7 +16,6 @@
  */
 package io.github.glytching.tranquil.ql.groovy;
 
-import io.github.glytching.tranquil.ql.parser.BaseParser;
 import io.github.glytching.tranquil.ql.parser.WhereClauseParser;
 
 /**
