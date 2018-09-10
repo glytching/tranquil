@@ -35,7 +35,7 @@ public class TranquilHandler implements ParseContext, ReadContext {
   public TranquilHandler(Configuration configuration) {
     this.configuration = configuration;
     this.suppressExceptions = configuration.containsOption(Option.SUPPRESS_EXCEPTIONS);
-    this.groovyFactory = new GroovyFactory();
+    this.groovyFactory = new GroovyFactory(configuration.lruCacheSize());
   }
 
   @Override
@@ -73,18 +73,41 @@ public class TranquilHandler implements ParseContext, ReadContext {
   }
 
   @Override
+  public boolean exists(String where) {
+    boolean exists = true;
+    List<Map<String, Object>> read = internalRead(parsed, "", where);
+
+    if (!read.isEmpty()) {
+      if (read.size() == 1) {
+        // we might be dealing with an input which contained a single array attribute
+        Object value = read.get(0).entrySet().iterator().next().getValue();
+        if (value instanceof List) {
+          exists = ((List) value).size() > 0;
+        }
+      }
+    } else {
+      exists = false;
+    }
+    return exists;
+  }
+
+  @Override
   public String read(String select, String where) {
-    return configuration.mappingProvider().serialize(internalRead(parsed, select, where));
+    List<Map<String, Object>> read = internalRead(parsed, select, where);
+
+    return configuration.mappingProvider().serialize(read);
   }
 
   @Override
   public <T> T read(String select, String where, Class<T> type) {
-    return configuration.mappingProvider().serialize(internalRead(parsed, select, where), type);
+    List<Map<String, Object>> read = internalRead(parsed, select, where);
+    return configuration.mappingProvider().serialize(read, type);
   }
 
   @Override
   public <T> T read(String select, String where, TypeRef<T> type) {
-    return configuration.mappingProvider().serialize(internalRead(parsed, select, where), type);
+    List<Map<String, Object>> read = internalRead(parsed, select, where);
+    return configuration.mappingProvider().serialize(read, type);
   }
 
   private List<Map<String, Object>> internalRead(

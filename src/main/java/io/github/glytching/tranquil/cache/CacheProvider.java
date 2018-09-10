@@ -2,25 +2,28 @@ package io.github.glytching.tranquil.cache;
 
 /** Singleton factory pattern over an instance of {@link Cache}. */
 public class CacheProvider {
-  private Cache cache = null;
+  private volatile Cache cache = null;
+
+  /** the maximum permitted capacity of the cache */
+  private final int cacheSize;
+
+  public CacheProvider(int cacheSize) {
+    this.cacheSize = cacheSize;
+  }
 
   /**
    * Return a singleton instance of {@link Cache}
    *
-   * @param size the maximum permitted capacity of the cache
    * @return
    */
-  public Cache get(int size) {
-    Cache c = cache;
-    if (c == null) {
+  public Cache get() {
+    if (cache == null) {
       synchronized (this) {
-        c = cache;
-        if (c == null) {
-          c = new LRUCache(size);
-          cache = c;
+        if (cache == null) {
+          cache = new LRUCache(cacheSize);
         }
       }
     }
-    return c;
+    return cache;
   }
 }

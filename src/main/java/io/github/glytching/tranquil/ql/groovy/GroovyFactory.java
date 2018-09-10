@@ -19,6 +19,8 @@ package io.github.glytching.tranquil.ql.groovy;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovySystem;
+import io.github.glytching.tranquil.cache.Cache;
+import io.github.glytching.tranquil.cache.CacheProvider;
 import io.github.glytching.tranquil.ql.Predicator;
 import io.github.glytching.tranquil.ql.Projector;
 import io.github.glytching.tranquil.ql.parser.SelectClauseParser;
@@ -39,18 +41,25 @@ public class GroovyFactory {
   private final GroovyClassLoader groovyClassLoader;
   private final GroovySelectClauseParser selectClauseParser;
   private final GroovyWhereClauseParser whereClauseParser;
+  private final Cache cache;
 
-  public GroovyFactory() {
-    this(new GroovyClassLoader(), new GroovySelectClauseParser(), new GroovyWhereClauseParser());
+  public GroovyFactory(int cacheSize) {
+    this(
+        new GroovyClassLoader(),
+        new GroovySelectClauseParser(),
+        new GroovyWhereClauseParser(),
+        new CacheProvider(cacheSize).get());
   }
 
   public GroovyFactory(
       GroovyClassLoader groovyClassLoader,
       GroovySelectClauseParser selectClauseParser,
-      GroovyWhereClauseParser whereClauseParser) {
+      GroovyWhereClauseParser whereClauseParser,
+      Cache cache) {
     this.groovyClassLoader = groovyClassLoader;
     this.selectClauseParser = selectClauseParser;
     this.whereClauseParser = whereClauseParser;
+    this.cache = cache;
   }
 
   /**
@@ -62,14 +71,20 @@ public class GroovyFactory {
    * @return a Groovy implementation of our Predicator, specific to the given expression
    */
   public Predicator createPredicator(String expression) throws GroovyFactoryException {
-    String script = whereClauseParser.parse(expression);
+    Predicator predicator = cache.get(Predicator.class, expression);
+    if (predicator == null) {
+      String script = whereClauseParser.parse(expression);
 
-    logger.fine(
-        String.format(
-            "From the the expression: %s comes the groovy function: [%s]", expression, script));
+      logger.log(
+          Level.FINEST,
+          "Created the groovy class: [{0}] from the expression: [{1}]",
+          new Object[] {script, expression});
 
-    // now compile the groovy class and get an instance
-    return create(Predicator.class, script);
+      predicator = create(Predicator.class, script);
+      cache.put(expression, predicator);
+    }
+
+    return predicator;
   }
 
   /**
@@ -81,21 +96,23 @@ public class GroovyFactory {
    * @return a Groovy implementation of our Projector, specific to the given expression
    */
   public Projector createProjector(String expression) throws GroovyFactoryException {
-    String script = selectClauseParser.parse(expression);
-    // String script = selectClauseParser.get(String.class, expression);
+    Projector projector = cache.get(Projector.class, expression);
+    if (projector == null) {
+      String script = selectClauseParser.parse(expression);
 
-    logger.fine(
-        String.format(
-            "From the the expression: %s comes the groovy function: [%s]", expression, script));
+      logger.log(
+          Level.FINEST,
+          "Created the groovy class: [{0}] from the expression: [{1}]",
+          new Object[] {script, expression});
 
-    // now compile the groovy class and get an instance
-    return create(Projector.class, script);
+      projector = create(Projector.class, script);
+      cache.put(expression, projector);
+    }
+    return projector;
   }
 
   @SuppressWarnings("unchecked")
   private <T> T create(final Class<T> type, final String script) throws GroovyFactoryException {
-    // TODO cache this?!
-    // now to compile the groovy class and get an instance
     String name = UUID.randomUUID().toString();
     GroovyCodeSource groovyCodeSource = new GroovyCodeSource(script, name, "/groovy/shell");
     groovyCodeSource.setCachable(true);

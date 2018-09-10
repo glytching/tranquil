@@ -9,11 +9,11 @@ public class CacheProviderTest {
 
   @Test
   public void willProvideASingleCacheInstance() {
-    CacheProvider cacheProvider = new CacheProvider();
-    Cache cache = cacheProvider.get(1);
+    CacheProvider cacheProvider = new CacheProvider(1);
+    Cache cache = cacheProvider.get();
 
     assertThat(cache, notNullValue());
     assertThat(cache, instanceOf(LRUCache.class));
-    assertThat(cache, sameInstance(cacheProvider.get(1)));
+    assertThat(cache, sameInstance(cacheProvider.get()));
   }
 }

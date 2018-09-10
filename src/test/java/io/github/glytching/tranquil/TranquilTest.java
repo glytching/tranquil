@@ -47,29 +47,6 @@ public class TranquilTest {
     TranquilTest.TEMPORARY_FOLDER = givenTemporaryFolder;
   }
 
-  // given four JSON inputs, each of which has string, integer, float, date
-  //    simple json object
-  //    json array
-  //    json object with single array attribute
-  //    json object with combination of array and non array attributes
-
-  // for each JSON verify:
-  //    all operators: =, !=, <, >, <=, >=, like, not like, in, not in, null, not null
-  //    all data types: string, float, integer, boolean, collections
-  //    all conjunctions: AND, OR, AND with OR
-
-  // we also cover:
-  //    projections, including ...
-  //      array accessors
-  //      simple arithmetic: literals alone and literal plus accessor
-  //      string literal concatenation: literals alone and literal plus accessor
-  //    map to custom type, map to custom list
-  //    all input mechanisms: String, InputStream, File (create a temp file on the fly?)
-  //    all Mappers (jackson and Gson)
-  //    exception handling: dodgy json, dodgy select, dodgy where
-  //    exception handling suppression
-  //    pretty printing
-
   @Test
   public void testAllOperatorsAndAllDataTypesWithSimpleJson() {
     assertThat(
@@ -103,9 +80,7 @@ public class TranquilTest {
   public void testAllOperatorsAndAllDataTypesWithComplexJson() {
     assertThat(
         Tranquil.parse(COMPLEX_JSON)
-            .read(
-                "*",
-                "type = 'catalog' and items[*].quantity = 10 and items[0].name = 'tap'"),
+            .read("*", "type = 'catalog' and items[*].quantity = 10 and items[0].name = 'tap'"),
         is(COMPLEX_JSON));
   }
 
@@ -203,7 +178,8 @@ public class TranquilTest {
             .read(
                 "2 + 2 as four, 2 * price as doublePrice, 5 + quantity as quantityPlusFive, 20 - quantity as twentyMinusQuantity",
                 "name='tap'"),
-        is("{\"four\":4,\"doublePrice\":99.98,\"quantityPlusFive\":15,\"twentyMinusQuantity\":10}"));
+        is(
+            "{\"four\":4,\"doublePrice\":99.98,\"quantityPlusFive\":15,\"twentyMinusQuantity\":10}"));
   }
 
   @Test
@@ -214,6 +190,35 @@ public class TranquilTest {
                 "'Laurel' + ' and ' + 'Hardy' as twosome, 'silver ' + name as qualifiedName",
                 "name='tap'"),
         is("{\"twosome\":\"Laurel and Hardy\",\"qualifiedName\":\"silver tap\"}"));
+  }
+
+  @Test
+  public void testExistsWithSimpleJson() {
+    assertThat(Tranquil.parse(SIMPLE_JSON).exists("quantity = 10"), is(true));
+
+    assertThat(Tranquil.parse(SIMPLE_JSON).exists("quantity = 666"), is(false));
+  }
+
+  @Test
+  public void testExistsWithJsonArray() {
+    assertThat(Tranquil.parse(JSON_ARRAY).exists("quantity = 10"), is(true));
+
+    assertThat(Tranquil.parse(JSON_ARRAY).exists("quantity = 666"), is(false));
+  }
+
+  @Test
+  public void testExistsWithComplexJson() {
+    assertThat(Tranquil.parse(COMPLEX_JSON).exists("items[*].quantity = 10"), is(true));
+
+    assertThat(Tranquil.parse(COMPLEX_JSON).exists("items[*].quantity = 666"), is(false));
+  }
+
+  @Test
+  public void testExistsWithJsonHavingASingleArrayAttribute() {
+    assertThat(Tranquil.parse(JSON_WITH_SINGLE_ARRAY_ATTRIBUTE).exists("quantity = 10"), is(true));
+
+    assertThat(
+        Tranquil.parse(JSON_WITH_SINGLE_ARRAY_ATTRIBUTE).exists("quantity = 666"), is(false));
   }
 
   @Test
@@ -243,7 +248,7 @@ public class TranquilTest {
 
   @Test
   public void testReadFromAMap() {
-      Map map = Tranquil.parse(SIMPLE_JSON).read("", "", Map.class);
+    Map map = Tranquil.parse(SIMPLE_JSON).read("", "", Map.class);
 
     assertThat(Tranquil.parse(map).read("name", "quantity=10"), is("{\"name\":\"tap\"}"));
   }

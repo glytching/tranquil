@@ -10,6 +10,14 @@ import io.github.glytching.tranquil.mapping.TypeRef;
 public interface ReadContext {
 
   /**
+   * Tests this context to see whether it matches the given {@code where}.
+   *
+   * @param where predicates expressed using our SQL-esque grammar
+   * @return true if this context contains data which matches the given predicate(s)
+   */
+  boolean exists(String where);
+
+  /**
    * Reads from this context, applying the given {@code select} and {@code where}.
    *
    * @param select projections expressed using our SQL-esque grammar

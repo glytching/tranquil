@@ -13,6 +13,8 @@ public class LRUCacheTest {
 
     sut.put("aKey", "aValue");
     sut.put("bKey", "bValue");
+    // set the same key again to trigger LRU recycling
+    sut.put("aKey", "aValue");
 
     assertThat(sut.size(), is(2));
     assertThat(sut.get("aKey"), is("aValue"));
