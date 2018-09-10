@@ -92,7 +92,7 @@ Tranquil.parse(json).exists("quantity = 10 or owner is null")
 The library is currently `v1.0.0-SNAPSHOT`, before the `1.0.0` release is published the following will be added:
 
 * Documentation:
-   * The QL syntax including usages of
+   * The QL syntax including usages of:
       * All operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `in`, `not in`, `like`, `not like`, `is null`, `is not null`
       * All conjunctions: `AND`, `OR`
       * String literals including concatenation
