@@ -3,102 +3,27 @@ Tranquil
 
 [![Build Status](https://travis-ci.org/glytching/tranquil.svg?branch=master)](https://travis-ci.org/glytching/tranquil)  [![Coverage Status](https://coveralls.io/repos/github/glytching/tranquil/badge.svg?branch=master)](https://coveralls.io/github/glytching/tranquil?branch=master) [![Scrutinizer](https://img.shields.io/scrutinizer/g/glytching/tranquil.svg)](https://scrutinizer-ci.com/g/glytching/junit-extensions/)
 
-> In Progress
+Tranquil is a Java library which provides a SQL-esque language for querying JSON and `Map`s.
 
-A library for reading data from JSON (or a Java Map) using a SQL grammar.
+Tranquil wraps a JSON de/serialization library and adds some predicate and projection capabilities. The inputs for these capabilities are expressed in SQL since many developers are likely to be familiar with using SQL to express `select` and `where` clauses.
 
+That's quite a mouthful so have a quick look at the [simple example](https://github.com/glytching/tranquil/wiki/SimpleExample) for clarification.
 
-### Coming Soon
+Plenty more details [in the docs](https://github.com/glytching/tranquil/wiki).
 
-The library is currently `v1.0.0-SNAPSHOT`, before the `1.0.0` release is published the following will be added:
+> Note: this library is still at `v1.0.0-SNAPSHOT` the work required to get to `v1.0.0` is tracked in the [Preparing for 1.0.0](https://github.com/glytching/tranquil/projects/2) project.
 
-* Documentation:
-   * The QL syntax including usages of:
-      * All operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `in`, `not in`, `like`, `not like`, `is null`, `is not null`
-      * All conjunctions: `AND`, `OR`
-      * String literals including concatenation
-      * Numeric literals including concatenation and arithemtic operators: `+`, `-`, `*`, `/`
-   * A cookbook showing example usage covering all features and various types of input
-* Links to to Maven Central and Javadoc.io
 
 ### Examples
 
-Note: detailed docs will be added soon, tracked by [this issue](https://github.com/glytching/tranquil/issues/4).
+See the [docs](https://github.com/glytching/tranquil/wiki), specifically:
 
-Given this JSON string:
+* [Simple](https://github.com/glytching/tranquil/wiki/SimpleExample)
+* [Nested](https://github.com/glytching/tranquil/wiki/NestedExample)
+* [Matching](https://github.com/glytching/tranquil/wiki/MatchingExample)
+* [Transformation](https://github.com/glytching/tranquil/wiki/TransformationExample)
+* [Bespoke Ouput Types](https://github.com/glytching/tranquil/wiki/BespokeOutputTypesExample)
 
-```
-[
-  {
-    "name": "tap",
-    "price": 49.99,
-    "quantity": 10,
-    "active": true,
-    "owner": null,
-    "since": "2018-09-07"
-  },
-  {
-    "name": "sink",
-    "price": 99.99,
-    "quantity": 100,
-    "active": false,
-    "owner": null,
-    "since": "2018-09-02"
-  }
-]
-```
-
-The following code ...
-
-```
-Tranquil.parse(json)
-  .read(
-    "*",
-    "quantity = 10 and name like 'ta' and owner is null "
-  )
-```
-
-... will return:
-
-```
-{
-  "name": "tap",
-  "price": 49.99,
-  "quantity": 10,
-  "active": true,
-  "owner": null,
-  "since": "2018-09-07"
-}
-```
-
-And, using projections with some transformations, the following code ...
-
-```
-Tranquil.parse(json)
-  .read(
-    "name, price, 'bathware' as category, 2 * quantity as twiceTheQuantity",
-    "quantity = 10 and name like 'ta' and owner is null "
-  )
-```
-
-... will return:
-
-```
-{
-  "name": "tap",
-  "price": 49.99,
-  "category": "bathware",
-  "twiceTheQuantity": 20
-}
-```
-
-And, using the library see whether the given JSON matches a predicate(s) ...
-
-```
-Tranquil.parse(json).exists("quantity = 10 or owner is null")
-```
-
-...will return `true`.
 
 ### Building Tranquil
 

@@ -2,7 +2,7 @@ package io.github.glytching.tranquil.exception;
 
 /**
  * Extends {@link TranquilException} to provide some identity and traceability for exceptions which
- * * arise when mapping into / our ot the serialised form.
+ * arise when mapping between serialized and deserialized formats.
  */
 public class MappingException extends TranquilException {
 

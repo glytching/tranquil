@@ -98,7 +98,17 @@ public class TranquilHandler implements ParseContext, ReadContext {
     return configuration.mappingProvider().serialize(read);
   }
 
-  @Override
+    @Override
+    public String select(String select) {
+        return read(select, "");
+    }
+
+    @Override
+    public String where(String where) {
+        return read("", where);
+    }
+
+    @Override
   public <T> T read(String select, String where, Class<T> type) {
     List<Map<String, Object>> read = internalRead(parsed, select, where);
     return configuration.mappingProvider().serialize(read, type);

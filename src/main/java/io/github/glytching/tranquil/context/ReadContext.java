@@ -27,6 +27,24 @@ public interface ReadContext {
   String read(String select, String where);
 
   /**
+   * Reads from this context, applying the given {@code select} with no predicates. This is a
+   * shortcut to {@code read(select, "")}.
+   *
+   * @param select projections expressed using our SQL-esque grammar
+   * @return result the projected and/or predicated results as a string
+   */
+  String select(String select);
+
+  /**
+   * Reads from this context, applying the given {@code where} and a <i>select *</i>. This is a
+   * shortcut to {@code read("", where)}.
+   *
+   * @param where predicates expressed using our SQL-esque grammar
+   * @return result the projected and/or predicated results as a string
+   */
+  String where(String where);
+
+  /**
    * Reads from this context, applying the given {@code select} and {@code where}.
    *
    * @param select projections expressed using our SQL-esque grammar

@@ -279,6 +279,16 @@ public class TranquilTest {
         is(GSON_SIMPLE_JSON));
   }
 
+  @Test
+  public void testSelectOnly() {
+    assertThat(Tranquil.parse(SIMPLE_JSON).select("name"), is("{\"name\":\"tap\"}"));
+  }
+
+  @Test
+  public void testWhereOnly() {
+    assertThat(Tranquil.parse(SIMPLE_JSON).where("name='tap'"), is(SIMPLE_JSON));
+  }
+
   @ParameterizedTest
   @MethodSource("getMappingProviders")
   @ExpectedException(type = MappingException.class, messageIs = "Failed to deserialize [not json]!")

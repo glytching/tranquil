@@ -126,7 +126,7 @@ public class GroovyWhereClauseParserTest {
   public void testAnyArrayMember() {
     String parsed = sut.parse("x[*].y = 'foo'");
 
-    assertOutput(parsed, "given?.x?.findResult(false){ v -> v?.y==\"foo\" }");
+    assertOutput(parsed, "given?.x?.findResult(false){ v -> if(v?.y==\"foo\") return true }");
   }
 
   @Test

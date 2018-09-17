@@ -250,7 +250,7 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
           // if we are dealing with 'any element' then we need to Groovy's 'find element in
           // collection'
           currentPredicate.setLhs(
-              currentPredicate.getLhs().replace("[", ".findResult(false){ v -> v"));
+              currentPredicate.getLhs().replace("[", ".findResult(false){ v -> if(v"));
         } else {
           if (!isClosingArray(text)) {
             currentPredicate.appendToLhs(text);
@@ -265,7 +265,7 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
 
       // close the 'find element in collection' lambda
       if (currentPredicate.isAnyCollectionElement()) {
-        currentPredicate.appendToRhs(" }");
+        currentPredicate.appendToRhs(") return true }");
       }
     }
   }
