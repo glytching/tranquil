@@ -88,7 +88,7 @@ public class GroovyWhereClauseParserTest {
   public void testInOperator() {
     String parsed =
         sut.parse(
-            "x in ('a', 'b') and y in (-10.1, -11.2) " + "and z not in (1, 2) and p in (101, 102)");
+            "x in ('a', 'b') and y in (-10.1, -11.2) and z not in (1, 2) and p in (101, 102)");
 
     assertOutput(
         parsed,
