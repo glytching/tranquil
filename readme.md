@@ -1,7 +1,7 @@
 Tranquil
 ========
 
-[![Build Status](https://travis-ci.org/glytching/tranquil.svg?branch=master)](https://travis-ci.org/glytching/tranquil)  [![Coverage Status](https://coveralls.io/repos/github/glytching/tranquil/badge.svg?branch=master)](https://coveralls.io/github/glytching/tranquil?branch=master) [![Scrutinizer](https://img.shields.io/scrutinizer/g/glytching/tranquil.svg)](https://scrutinizer-ci.com/g/glytching/junit-extensions/)
+[![Build Status](https://travis-ci.org/glytching/tranquil.svg?branch=master)](https://travis-ci.org/glytching/tranquil)  [![Coverage Status](https://coveralls.io/repos/github/glytching/tranquil/badge.svg?branch=master)](https://coveralls.io/github/glytching/tranquil?branch=master) [![Scrutinizer](https://img.shields.io/scrutinizer/g/glytching/tranquil.svg)](https://scrutinizer-ci.com/g/glytching/junit-extensions/) [![Javadoc](https://javadoc-badge.appspot.com/io.github.glytching/tranquil.svg?label=javadoc)](https://www.javadoc.io/doc/io.github.glytching/tranquil/1.0.0) [![Maven Central](https://img.shields.io/maven-central/v/io.github.glytching/tranquil.svg)](http://repo1.maven.org/maven2/io/github/glytching/tranquil/1.0.0/)
 
 Tranquil is a Java library which provides a SQL-esque language for querying JSON and `Map`s.
 
@@ -24,6 +24,25 @@ See the [docs](https://github.com/glytching/tranquil/wiki), specifically:
 * [Transformation](https://github.com/glytching/tranquil/wiki/TransformationExample)
 * [Bespoke Ouput Types](https://github.com/glytching/tranquil/wiki/BespokeOutputTypesExample)
 
+### Using Tranquil
+
+The `tranquil` library is available on [Maven Central](http://search.maven.org/#artifactdetails%7Cio.github.glytching%7Ctranquil%7C1.0.0%7Cjar). Note: if using Tranquil as a test utility then use `<scope>test</scope>` or `testCompile`.
+
+#### Maven
+
+```
+<dependency>
+    <groupId>io.github.glytching</groupId>
+    <artifactId>tranquil</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+#### Gradle
+
+```
+compile 'io.github.glytching:tranquil:1.0.0'
+```
 
 ### Building Tranquil
 
