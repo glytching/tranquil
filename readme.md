@@ -11,8 +11,6 @@ That's quite a mouthful so have a quick look at the [simple example](https://git
 
 Plenty more details [in the docs](https://github.com/glytching/tranquil/wiki).
 
-> Note: this library is still at `v1.0.0-SNAPSHOT` the work required to get to `v1.0.0` is tracked in the [Preparing for 1.0.0](https://github.com/glytching/tranquil/projects/2) project.
-
 
 ### Examples
 
