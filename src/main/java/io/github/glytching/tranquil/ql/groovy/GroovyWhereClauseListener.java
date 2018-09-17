@@ -38,6 +38,7 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
   private static final String ARRAY_CLOSING_BRACKETS = "]";
   private static final Map<String, String> conjunctionsMap;
   private static final Map<String, String> operatorsMap;
+  private static final Map<String, String> inBracketsMap;
 
   static {
     conjunctionsMap = new HashMap<>();
@@ -52,14 +53,17 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
     operatorsMap.put("IN", " in ");
     operatorsMap.put("like", "=~");
     operatorsMap.put("LIKE", "=~");
-    operatorsMap.put("(", "[");
-    operatorsMap.put(")", "]");
+
+    inBracketsMap = new HashMap<>();
+    inBracketsMap.put("(", "[");
+    inBracketsMap.put(")", "]");
   }
 
   private final List<Predicate> predicates = new ArrayList<>();
   private Predicate currentPredicate = null;
   private boolean skipNextTerminal = false;
   private boolean inNullConstraint = false;
+  private boolean inInConstraint = false;
 
   @Override
   public void enterComp_op(@NotNull SQLParser.Comp_opContext ctx) {
@@ -99,12 +103,6 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
     } else {
       skipNextTerminal = false;
     }
-  }
-
-  @Override
-  public void enterPredicate(@NotNull SQLParser.PredicateContext ctx) {
-    super.enterPredicate(ctx);
-    initialisePredicate();
   }
 
   @Override
@@ -149,6 +147,18 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
 
     inNullConstraint = false;
     skipNextTerminal = false;
+  }
+
+  @Override
+  public void enterIn_predicate(SQLParser.In_predicateContext ctx) {
+    super.enterIn_predicate(ctx);
+    inInConstraint = true;
+  }
+
+  @Override
+  public void exitIn_predicate(SQLParser.In_predicateContext ctx) {
+    super.exitIn_predicate(ctx);
+    inInConstraint = false;
   }
 
   public String getScript() {
@@ -198,15 +208,17 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
       currentPredicate.setOperator(operatorsMap.get(text));
     } else if (isNot(text)) {
       currentPredicate.setNegated();
+    } else if (conjunctionsMap.containsKey(text)) {
+      currentPredicate.setConjunction(conjunctionsMap.get(text));
+      initialisePredicate();
+    } else if (inInConstraint()) {
+      if (inBracketsMap.containsKey(text)) {
+        text = inBracketsMap.get(text);
+      }
+      appendValueToCurrentPredicate(text);
     } else if (!inNullConstraint()) {
       if (operatorsMap.containsKey(text)) {
-        if (currentPredicate == null) {
-          initialisePredicate();
-        }
         appendValueToCurrentPredicate(operatorsMap.get(text));
-      } else if (conjunctionsMap.containsKey(text)) {
-        currentPredicate.setConjunction(conjunctionsMap.get(text));
-        initialisePredicate();
       } else {
         appendValueToCurrentPredicate(text);
       }
@@ -238,7 +250,14 @@ public class GroovyWhereClauseListener extends TranquilLoggingListener {
     return inNullConstraint;
   }
 
+  private boolean inInConstraint() {
+    return inInConstraint;
+  }
+
   private void appendValueToCurrentPredicate(String text) {
+    if (currentPredicate == null) {
+      initialisePredicate();
+    }
     if (shouldReplaceSurroundingQuotes(text)) {
       text = "\"" + text.substring(1, text.length() - 1) + "\"";
     }

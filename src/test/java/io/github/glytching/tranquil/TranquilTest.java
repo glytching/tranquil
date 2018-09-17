@@ -97,7 +97,11 @@ public class TranquilTest {
   @Test
   public void testAllConjunctions() {
     assertThat(
-        Tranquil.parse(JSON_ARRAY).read("*", "quantity = 10 or active = true"), is(SIMPLE_JSON));
+        Tranquil.parse(JSON_ARRAY)
+            .read(
+                "*",
+                "quantity = 10 and (active = true or owner is null) and (name != 'sink' and price > 45)"),
+        is(SIMPLE_JSON));
   }
 
   @Test

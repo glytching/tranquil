@@ -170,7 +170,7 @@ public class GroovyWhereClauseParserTest {
   public void testOrNested() {
     String parsed = sut.parse("(x > 0 and y < 2) or z = 'foo'");
 
-    assertOutput(parsed, "[given?.x>0 && given?.y<2] || given?.z==\"foo\"");
+    assertOutput(parsed, "(given?.x>0 && given?.y<2) || given?.z==\"foo\"");
   }
 
   @Test
@@ -178,14 +178,14 @@ public class GroovyWhereClauseParserTest {
     String parsed = sut.parse("(x > 0 and (y < 2 or (z = 'foo' and p > 5)) and q = 4)");
 
     assertOutput(
-        parsed, "[given?.x>0 && [given?.y<2 || [given?.z==\"foo\" && given?.p>5]] && given?.q==4]");
+        parsed, "(given?.x>0 && (given?.y<2 || (given?.z==\"foo\" && given?.p>5)) && given?.q==4)");
   }
 
   @Test
   public void testWithParentheses() {
     String parsed = sut.parse("(x = 'foo') and (y = 'bar')");
 
-    assertOutput(parsed, "[given?.x==\"foo\"] && [given?.y==\"bar\"]");
+    assertOutput(parsed, "(given?.x==\"foo\") && (given?.y==\"bar\")");
   }
 
   @Test
