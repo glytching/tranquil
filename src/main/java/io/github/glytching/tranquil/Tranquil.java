@@ -94,6 +94,7 @@ public class Tranquil {
    *
    * @param input input
    * @return a document context
+   * @throws IOException
    */
   public static ReadContext parse(File input) throws IOException {
     return new TranquilHandler().parse(input);

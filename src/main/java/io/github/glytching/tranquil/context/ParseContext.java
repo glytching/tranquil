@@ -55,6 +55,7 @@ public interface ParseContext {
    *
    * @param sourceFile
    * @return
+   * @throws IOException
    */
   ReadContext parse(File sourceFile) throws IOException;
 }

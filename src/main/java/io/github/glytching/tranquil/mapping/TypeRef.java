@@ -5,16 +5,16 @@ import java.lang.reflect.Type;
 
 /**
  * Used to specify generic type information for our {@link MappingProvider}. Example usage: <code>
- *     TypeRef<List<Item>> type = new TypeRef<List<Item>>(){};
+ *     TypeRef&lt;List&lt;Item&gt;&gt; type = new TypeRef&lt;List&lt;Item&gt;&gt;(){};
  *
- *     List<Item> serialized = sut.map(incoming, type);
+ *     List&lt;Item&gt; serialized = sut.map(incoming, type);
  * </code>
  *
  * <p>Adapted from <a
  * href="https://github.com/json-path/JsonPath/blob/master/json-path/src/main/java/com/jayway/jsonpath/TypeRef.java">JsonPath's
  * TypeRef</a>
  *
- * @param <T>
+ * @param <T> the type of the instance to be wrapped
  */
 public abstract class TypeRef<T> implements Comparable<TypeRef<T>> {
   protected final Type type;

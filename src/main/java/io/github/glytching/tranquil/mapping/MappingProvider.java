@@ -20,6 +20,7 @@ public interface MappingProvider {
    * Parse a json string encapsulated in the given {@code sourceStream} into a {@link Map}.
    *
    * @param sourceStream an input stream containing a json string
+   * @param charset
    * @return a {@link Map} representation of the given {@code sourceStream}
    */
   List<Map<String, Object>> deserialize(InputStream sourceStream, String charset);
