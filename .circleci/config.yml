@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+
+    working_directory: ~/repo
+
+    environment:
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      - run: mvn verify jacoco:report coveralls:report -DrepoToken=H4neLOFFOC06Qfc031RwapRuXfLZxZIVG
